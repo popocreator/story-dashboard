@@ -1,3 +1,6 @@
+# project
+bin/**/*.js
+
 # Logs
 logs
 *.log

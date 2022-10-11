@@ -3,11 +3,15 @@ import Task from './Task';
 import UnexpectedTask from './UnexpectedTask';
 
 export default class Story {
-	id: string;
-	name: string;
-	storypoint: number;
-	taskList: Task[];
+	id: string = '';
+	name: string = '';
+	storypoint: number = 0;
+	taskList: Task[] = [];
 	sprint: Sprint;
+
+	constructor(sprint: Sprint) {
+		this.sprint = sprint;
+	}
 
 	// Expected Task
 	addTask = (task: Task) => {};

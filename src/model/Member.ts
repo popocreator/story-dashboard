@@ -8,12 +8,12 @@ export const TAG = {
 };
 
 export default class Member {
-	id: string;
-	name: string;
-	timeRequiredPerStorypointInHour: number;
-	scheduleForThisSprint: Schedule[];
-	taskList: Task[];
-	unexpectedTask: UnexpectedTask[];
+	id: string = '';
+	name: string = '';
+	timeRequiredPerStorypointInHour: number = 0;
+	scheduleForThisSprint: Schedule[] = [];
+	taskList: Task[] = [];
+	unexpectedTask: UnexpectedTask[] = [];
 
 	constructor(sprintStartDate: Date, sprintEndDate: Date) {
 		this.loadGoogleCalendar(sprintStartDate, sprintEndDate);
@@ -31,14 +31,14 @@ export default class Member {
 	};
 
 	// Load Storypoints
-	availableStorypoint = (schedule) => {
+	availableStorypoint = (schedule: Schedule[] = []) => {
 		const total = 8;
 		let fixedHours = 0;
 		let bufferHours = 0;
 
+		const regex = /\[[가-힣a-zA-Z0-9]*\]/g;
 		schedule.forEach((s) => {
-			const regex = /\[[가-힣a-zA-Z0-9]*\]/g;
-			const tag = s.name.matchAll(regex)[0];
+			const tag = s.name.matchAll(regex).next().value;
 			switch (tag) {
 				case TAG.FIXED:
 					fixedHours += s.durationInHour;
@@ -56,13 +56,13 @@ export default class Member {
 		);
 	};
 	availableStorypointOn = (date: Date) => {
-		const schedule = this.scheduleForThisSprint.filter((s) => {
+		const schedule = this.scheduleForThisSprint?.filter((s) => {
 			return s.date.toLocaleDateString() === date.toLocaleDateString();
 		});
 		return this.availableStorypoint(schedule);
 	};
 	availableStorypointUntil = (date: Date) => {
-		const schedule = this.scheduleForThisSprint.filter((s) => {
+		const schedule = this.scheduleForThisSprint?.filter((s) => {
 			return s.date.getDate() <= date.getDate();
 		});
 		return this.availableStorypoint(schedule);
